@@ -1,34 +1,21 @@
-import { useState } from 'react'
 import { Container, Row, Col, Form } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux';
+import { getJobs, GET_JOBS, UPDATE_QUERY } from '../redux/actions';
 import Job from './Job';
 
 
 
 const MainSearch = () => {
-  const [query, setQuery] = useState('')
-  const [jobs, setJobs] = useState([])
+  const jobs = useSelector(state => state.search.content)
 
-
-  const baseEndpoint = 'https://strive-jobs-api.herokuapp.com/jobs?search='
+  const dispatch = useDispatch()
+  const queryRedux = useSelector(state => state.search.query)
 
   const handleChange = (e) => {
-    setQuery(e.target.value)
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    try {
-      const response = await fetch(baseEndpoint + query + '&limit=20')
-      if (response.ok) {
-        const { data } = await response.json()
-        setJobs(data)
-      } else {
-        alert('Error fetching results')
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch({
+      type: UPDATE_QUERY,
+      payload: e.target.value
+    })
   }
 
   return (
@@ -42,13 +29,16 @@ const MainSearch = () => {
           <Form>
             <Form.Control
               type="search"
-              value={query}
+              value={queryRedux}
               onChange={handleChange}
-              onKeyUp={(e) => {
-                if (query.length === 0) {
-                  setJobs([])
+              onKeyUp={() => {
+                if (queryRedux.length === 0) {
+                  dispatch({
+                    type: GET_JOBS,
+                    payload: []
+                  })
                 } else {
-                  handleSubmit(e)
+                  dispatch(getJobs())
                 }
               }}
               placeholder="type and press Enter"

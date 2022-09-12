@@ -1,34 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Job from './Job'
 import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCompanyJobs, SET_COMPANY_NAME } from '../redux/actions'
 
 const CompanySearchResults = () => {
-  const [jobs, setJobs] = useState([])
+  const jobs = useSelector(state => state.search.companyJobs)
   const params = useParams()
-
-  const baseEndpoint = 'https://strive-jobs-api.herokuapp.com/jobs?company='
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    getJobs()
+    dispatch({
+      type: SET_COMPANY_NAME,
+      payload: params.companyName,
+    })
+    dispatch(getCompanyJobs())
   }, [])
 
-  const getJobs = async () => {
-    try {
-      const response = await fetch(baseEndpoint + params.companyName)
-      if (response.ok) {
-        const { data } = await response.json()
-        setJobs(data)
-      } else {
-        alert('Error fetching results')
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
-    <Container>
+    <Container className='mt-5'>
       <Row>
         <Col>
           {jobs.map((jobData) => (

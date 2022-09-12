@@ -2,6 +2,7 @@ import { Row, Col } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { AiFillHeart } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux'
+import { addJobs, removeJobs } from '../redux/actions';
 
 
 const Job = ({ data }) => {
@@ -22,10 +23,10 @@ const Job = ({ data }) => {
           console.log(jobContent.some(job => job._id === data._id))
 
           if (jobContent.some((job) => job._id === data._id)) {
-            dispatch({ type: 'REMOVE_JOBS', payload: data._id })
+            dispatch(removeJobs(data._id))
           } else {
 
-            dispatch({ type: 'ADD_JOBS', payload: data })
+            dispatch(addJobs(data))
           }
 
         }} />
