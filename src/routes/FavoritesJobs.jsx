@@ -10,7 +10,7 @@ const FavoritesJobs = () => {
         <>
 
             {jobContent.length !== 0 ? (
-                <Container className="mt-5">
+                <Container className="mt-5 pt-5">
                     {
                         jobContent.map((job) => (
                             <Job key={job._id} data={job} />

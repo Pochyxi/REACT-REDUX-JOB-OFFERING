@@ -1,3 +1,4 @@
+import { TextField } from '@mui/material';
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { getJobs, GET_JOBS, UPDATE_QUERY } from '../redux/actions';
@@ -23,11 +24,14 @@ const MainSearch = () => {
     <Container>
       <Row>
         <Col xs={10} className="mx-auto my-5 text-center">
-          <h1>Remote Jobs Search</h1>
         </Col>
         <Col xs={10} className="mx-auto">
           <Form>
-            <Form.Control
+            <TextField
+              sx={{ width: '100%', }}
+              id="outlined-basic"
+              label="type and wait for a magic"
+              variant="outlined"
               type="search"
               value={queryRedux}
               onChange={handleChange}
@@ -41,7 +45,6 @@ const MainSearch = () => {
                   dispatch(getJobs())
                 }
               }}
-              placeholder="type and press Enter"
             />
           </Form>
         </Col>
